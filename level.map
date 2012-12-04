@@ -1,0 +1,16 @@
+[level]
+tileset = ground.png
+map = ..........
+      .#####.##.
+      .#...#..#.
+      .#...####.
+      .##.##....
+      ..........
+
+[G]
+name = general
+camp = human
+
+[.]
+name = floor
+camp = neutral
