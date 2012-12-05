@@ -1,22 +1,7 @@
+import ConfigParser
 import pygame, sys
 from pygame.locals import *
 
-pygame.init()
-screen = pygame.display.set_mode((400, 300))
-pygame.display.set_caption('Hello World!')
-fontObj = pygame.font.Font('freesansbold.ttf', 32)
-textSurfaceObj = fontObj.render('Hello world!', True, GREEN, BLUE)
-textRectObj = textSurfaceObj.get_rect()
-textRectObj.center(200,150)
-
-while True:
-    screen.blit(textSurfaceObj, textRectObj)
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-
-    pygame.display.update()
 
 class Map(object):
     def load_map(self, filename='level.map'):
@@ -33,6 +18,7 @@ class Map(object):
 
         self.width = len(self.map[0])
         self.height = len(self.map)
+        return self.map
 
     def get_info(self, x, y):
         """
@@ -70,3 +56,27 @@ class Map(object):
             return False
 
 
+BLUE = (0, 0, 128)
+GREEN = (0, 255, 0)
+pygame.init()
+screen = pygame.display.set_mode((400, 300))
+pygame.display.set_caption('Hello World!')
+fontObj = pygame.font.Font('freesansbold.ttf', 32)
+map = Map()
+map = map.load_map()
+x_position = 200
+y_position = 10
+
+for row in map:
+    textSurfaceObj = fontObj.render(row, True, GREEN, BLUE)
+    textRectObj = textSurfaceObj.get_rect()
+    textRectObj.center = (x_position, y_position)
+    screen.blit(textSurfaceObj, textRectObj)
+    y_position += 40
+while True:
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
+    pygame.display.update()
