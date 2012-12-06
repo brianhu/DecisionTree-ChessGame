@@ -17,22 +17,29 @@ class Map(object):
                 self.key[section] = desc
 
         for agent in human_agent_list:
-            x = randint(0,4)
-            y = randint(0,4)
-            if self.map[x][y] == '.':
-                buffer = list(self.map[x])
-                buffer[y] = agent
-                buffer = "".join(buffer)
-                self.map[x] = buffer
+            agent_added = False
+            while not agent_added:
+                x = randint(0,4)
+                y = randint(0,9)
+                if self.map[x][y] == '.':
+                    buffer = list(self.map[x])
+                    buffer[y] = agent
+                    buffer = "".join(buffer)
+                    self.map[x] = buffer
+                    agent_added = True
+                
 
         for agent in computer_agent_list:
-            x = randint(5,9)
-            y = randint(5,9)
-            if self.map[x][y] == '.':
-                buffer = list(self.map[x])
-                buffer[y] = agent
-                buffer = "".join(buffer)
-                self.map[x] = buffer
+            agent_added = False
+            while not agent_added:
+                x = randint(5,9)
+                y = randint(0,9)
+                if self.map[x][y] == '.':
+                    buffer = list(self.map[x])
+                    buffer[y] = agent
+                    buffer = "".join(buffer)
+                    self.map[x] = buffer
+                    agent_added = True
 
 
         self.width = len(self.map[0])
