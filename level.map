@@ -1,16 +1,47 @@
 [level]
-tileset = ground.png
 map = ..........
-      .#####.##.
-      .#...#..#.
-      .#...####.
-      .##.##....
       ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+      ..........
+
+[.]
+name = floor
+camp = neutral
 
 [G]
 name = general
 camp = human
 
-[.]
-name = floor
-camp = neutral
+[A]
+name = archer
+camp = human
+
+[C]
+name = cavalry
+camp = human
+
+[I]
+name = infantry
+camp = human
+
+[g]
+name = general
+camp = computer
+
+[a]
+name = archer
+camp = computer
+
+[c]
+name = cavalry
+camp = computer
+
+[i]
+name = infantry
+camp = computer
