@@ -16,32 +16,32 @@ camp = neutral
 
 [G]
 name = general
-camp = human
+camp = player1
 
 [A]
 name = archer
-camp = human
+camp = player1
 
 [C]
 name = cavalry
-camp = human
+camp = player1
 
 [I]
 name = infantry
-camp = human
+camp = player1
 
 [g]
 name = general
-camp = computer
+camp = player2
 
 [a]
 name = archer
-camp = computer
+camp = player2
 
 [c]
 name = cavalry
-camp = computer
+camp = player2
 
 [i]
 name = infantry
-camp = computer
+camp = player2

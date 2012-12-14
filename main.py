@@ -18,6 +18,7 @@ for row in map.map:
     textRectObj.center = (x_position, y_position)
     screen.blit(textSurfaceObj, textRectObj)
     y_position += 40
+
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -25,3 +26,17 @@ while True:
             sys.exit()
 
     pygame.display.update()
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            print 'quit'
+        elif event.type == KEYDOWN:
+            print 'keydown'
+        elif event.type == MOUSEBUTTONDOWN:
+            print 'mousebuttondown'
+            if fist.punch(chimp):
+                punch_sound.play() #punch
+                chimp.punched()
+            else:
+                whiff_sound.play() #miss
+        elif event.type == MOUSEBUTTONUP:
+            fist.unpunch()
