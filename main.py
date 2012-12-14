@@ -40,3 +40,22 @@ while True:
                 whiff_sound.play() #miss
         elif event.type == MOUSEBUTTONUP:
             fist.unpunch()
+
+
+
+p0=Agent(0)
+p1=Agent(1)
+nowPlayer=p0
+
+while p0.isLose()==False and p1.isLose()==False:
+    doneList=nowPlayer.aliveList()
+    while len(doneList)!=0:
+        x=algorithm()
+        information update
+        doneList.remove(x)
+
+    if nowPlayer==p0:
+        nowPlayer=p1
+    else:
+        nowPlayer=p0
+
