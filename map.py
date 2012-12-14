@@ -77,18 +77,18 @@ class Map(object):
     #         if temp_x != x:
 
 
-    def isEnamy(self, x, y, camp):
+    def isEnemy(self, x, y, camp):
         """
             this method is used to check whether there is an enamy
             on a specific grid.
         """
-        enamy_map = {
+        enemyMap = {
             'human' : 'computer',
             'computer' : 'human'
         }
         grid_info = self.get_info(x, y)
         try:
-            return grid_info['camp'] == enamy_map[camp]
+            return grid_info['camp'] == enemyMap[camp]
         except KeyError:
             return False
 
