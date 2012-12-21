@@ -1,4 +1,7 @@
+neutral = 'neutral'
+
 player1 = {
+    'camp' : 'player1',
     'general' : 'G',
     'archer' : 'A',
     'cavalry' : 'C',
@@ -6,8 +9,9 @@ player1 = {
 }
 
 player2 = {
+    'camp' : 'player2',
     'general' : 'g',
     'archer' : 'a',
     'cavalry' : 'c',
-    'infantry' : 'i',
+    'infantry' : 'i'
 }

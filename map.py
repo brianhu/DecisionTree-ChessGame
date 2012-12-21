@@ -1,10 +1,19 @@
 import ConfigParser
 from random import randint
-from constant import *
+import constant
+import copy
 
+def singleton(cls):
+    sharedMap = {}
+    def getSharedMap():
+        if cls not in sharedMap:
+            sharedMap[cls] = cls()
+        return sharedMap[cls]
+    return getSharedMap
+
+@singleton
 class Map(object):
     def __init__(self, filename='level.map'):
-        self.map = []
         self.key = {}
         parser = ConfigParser.ConfigParser()
         parser.read(filename)
@@ -19,33 +28,56 @@ class Map(object):
     def allocLocation(self, character):
         # player1CharacterList = ['G','A','C','I','I']
         # player2CharacterList = ['g','a','c','i','i']
-        agent_added = False
-        while not agent_added:
-            if character.isupper():
-                x = randint(0,4)
+        agentAdded = False
+        while not agentAdded:
+            if character.camp == constant.player1['camp']:
+                x = randint(0, 4)
             else:
-                x = randint(5,9)
-            y = randint(0,9)
-            if self.map[x][y] == '.':
+                x = randint(5, 9)
+            y = randint(0, 9)
+            if character.kind == 'c':
+                x, y = (5, 4)
                 buffer = list(self.map[x])
-                buffer[y] = character
+                buffer[y] = character.kind
                 buffer = "".join(buffer)
                 self.map[x] = buffer
-                agent_added = True
+                agentAdded = True
+            elif character.kind =='C':
+                x, y = (4, 4)
+                buffer = list(self.map[x])
+                buffer[y] = character.kind
+                buffer = "".join(buffer)
+                self.map[x] = buffer
+                agentAdded = True
+            elif character.kind == 'I':
+                x, y = (4, 3)
+                buffer = list(self.map[x])
+                buffer[y] = character.kind
+                buffer = "".join(buffer)
+                self.map[x] = buffer
+                agentAdded = True
+            elif self.map[x][y] == '.':
+                buffer = list(self.map[x])
+                buffer[y] = character.kind
+                buffer = "".join(buffer)
+                self.map[x] = buffer
+                agentAdded = True
 
         return x, y
 
-    def getInfo(self, x, y):
+    def getInfo(self, node):
         """
             this method is used to get info of a specific grid on map
             a map like:
-            ...
             .#.
-            ##.
+            ...
+            ...
             it's a list: ['...','.#.','##.'] in python
-            map[0][1] is .
-            map[1][1] is #
+            map[0][0] is .
+            map[0][1] is #
         """
+        x = node[0]
+        y = node[1]
         try:
             char = self.map[x][y]
         except IndexError:
@@ -55,38 +87,98 @@ class Map(object):
         except KeyError:
             return {}
 
-    # def get_available_location(self, x, y, camp, step):
-    #     if x + step > self.width:
-    #         right_border = self.width
-    #     else:
-    #         right_border = x + step
-    #     if x - step < 0 :
-    #         left_border = 0
-    #     else:
-    #         left_border = x - step
-    #     if y + step > self.height:
-    #         bottom_border = self.height
-    #     else:
-    #         bottom_border = y + step
-    #     if y - step < 0:
-    #         top_border = 0
-    #     else:
-    #         top_border = y - step
-
-    #     for temp_x in range(left_border, right_border + 1):
-    #         if temp_x != x:
+    def legalActions(self, character):
+        """return legal locatoins"""
+        import copy
+        def getBorder(node):
+            x = node[0]
+            y = node[1]
+            border = []
+            if x != 0:
+                border.append(((x-1), y))
+            if x != 9:
+                border.append(((x+1), y))
+            if y != 0:
+                border.append((x, (y-1)))
+            if y != 9:
+                border.append((x, (y+1)))
+            return border
 
 
-    def isEnemy(self, x, y, camp):
+        def addOptions(options=[], invalidPaths=[], fringe=[]):
+            if not options:
+                option = {
+                    'start': (character.posX, character.posY),
+                    'path': [],
+                    'cost': 0,
+                    'target': (character.posX, character.posY)
+                } # stop is always an option
+                options.append(option)
+                fringe.append(option)
+
+            newFringe = []
+            for option in fringe:
+                if option['cost'] < character.moveRange:
+                    start = option['target'] # start of next step is target of last step
+                    checkList = getBorder(start)
+                    for node in checkList:
+                        path = copy.copy(option['path'])
+                        if node not in path:
+                            info = self.getInfo(node)
+                            try:
+                                if info['name'] == 'floor':
+                                    path.append(node)
+                                    newOption = {
+                                        'start': option['start'],
+                                        'path': path,
+                                        'cost': option['cost'] + 1,
+                                        'target': node
+                                    }
+                                    newFringe.append(newOption)
+                                elif info['camp'] != character.camp:
+                                    for border in getBorder(node):
+                                        invalidPaths.append(border)
+                            except KeyError:
+                                # if x, y are out of range, KeyError may be triggered
+                                pass
+                else:
+                    print '-----------options-------'
+                    print options
+                    print '========================='
+                    for o in options:
+                        print '$$$$$$$$$$$$'
+                        print o['target']
+                        print '$$$$$$$$$$$$'
+                        if o['target'] == (5, 2):
+                            print 'fffffffffffffff'
+                        for path in invalidPaths:
+                            if path in o['path'][:-1]:
+                                print 'invalid'
+                                print path
+                                print o
+                                options.remove(o)
+                                terminated = True
+                                break
+                    return options
+            for option in newFringe:
+                options.append(option)
+            options = addOptions(options, invalidPaths, newFringe)
+            return options
+
+        actions = addOptions()
+        return actions
+
+    def isEnemy(self, character):
         """
             this method is used to check whether there is an enamy
             on a specific grid.
         """
         enemyMap = {
-            'human' : 'computer',
-            'computer' : 'human'
+            'player1' : 'player2',
+            'player2' : 'player1'
         }
-        grid_info = self.get_info(x, y)
+        node = (character.posX, character.posY)
+        gridInfo = self.getInfo(node)
         try:
             return grid_info['camp'] == enemyMap[camp]
         except KeyError:
