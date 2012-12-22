@@ -50,7 +50,7 @@ class Map(object):
                 self.map[x] = buffer
                 agentAdded = True
             elif character.kind == 'I':
-                x, y = (4, 3)
+                x, y = (4, 5)
                 buffer = list(self.map[x])
                 buffer[y] = character.kind
                 buffer = "".join(buffer)
@@ -87,8 +87,13 @@ class Map(object):
         except KeyError:
             return {}
 
+    def setInfo(self, character, target):
+        """update map"""
+
+
     def legalActions(self, character):
         """return legal locatoins"""
+        #TODO: across teammates
         import copy
         def getBorder(node):
             x = node[0]
@@ -103,7 +108,6 @@ class Map(object):
             if y != 9:
                 border.append((x, (y+1)))
             return border
-
 
         def addOptions(options=[], invalidPaths=[], fringe=[]):
             if not options:
@@ -142,23 +146,14 @@ class Map(object):
                                 # if x, y are out of range, KeyError may be triggered
                                 pass
                 else:
-                    print '-----------options-------'
-                    print options
-                    print '========================='
-                    for o in options:
-                        print '$$$$$$$$$$$$'
-                        print o['target']
-                        print '$$$$$$$$$$$$'
-                        if o['target'] == (5, 2):
-                            print 'fffffffffffffff'
+                    invalidOptions = []
+                    for option in options:
                         for path in invalidPaths:
-                            if path in o['path'][:-1]:
-                                print 'invalid'
-                                print path
-                                print o
-                                options.remove(o)
-                                terminated = True
+                            if path in option['path'][:-1]:
+                                invalidOptions.append(option)
                                 break
+                    for option in invalidOptions:
+                        options.remove(option)
                     return options
             for option in newFringe:
                 options.append(option)
