@@ -35,28 +35,7 @@ class Map(object):
             else:
                 x = randint(5, 9)
             y = randint(0, 9)
-            if character.kind == 'c':
-                x, y = (5, 4)
-                buffer = list(self.map[x])
-                buffer[y] = character.kind
-                buffer = "".join(buffer)
-                self.map[x] = buffer
-                agentAdded = True
-            elif character.kind =='C':
-                x, y = (4, 4)
-                buffer = list(self.map[x])
-                buffer[y] = character.kind
-                buffer = "".join(buffer)
-                self.map[x] = buffer
-                agentAdded = True
-            elif character.kind == 'I':
-                x, y = (4, 5)
-                buffer = list(self.map[x])
-                buffer[y] = character.kind
-                buffer = "".join(buffer)
-                self.map[x] = buffer
-                agentAdded = True
-            elif self.map[x][y] == '.':
+            if self.map[x][y] == '.':
                 buffer = list(self.map[x])
                 buffer[y] = character.kind
                 buffer = "".join(buffer)
@@ -89,6 +68,26 @@ class Map(object):
 
     def setInfo(self, character, target):
         """update map"""
+        originalX = character.posX
+        originalY = character.posY
+
+        newX = target[0]
+        newY = target[1]
+
+        character.posX = newX
+        character.posY = newY
+
+        buffer = list(self.map[originalX])
+        buffer[originalY] = '.'
+        buffer = "".join(buffer)
+        self.map[originalX] = buffer
+
+        buffer = list(self.map[newX])
+        buffer[newY] = character.kind
+        buffer = "".join(buffer)
+        self.map[newX] = buffer
+
+        return character
 
 
     def legalActions(self, character):
@@ -115,6 +114,7 @@ class Map(object):
                     'start': (character.posX, character.posY),
                     'path': [],
                     'cost': 0,
+                    'stop': True,
                     'target': (character.posX, character.posY)
                 } # stop is always an option
                 options.append(option)
@@ -136,12 +136,23 @@ class Map(object):
                                         'start': option['start'],
                                         'path': path,
                                         'cost': option['cost'] + 1,
+                                        'stop': True,
                                         'target': node
                                     }
                                     newFringe.append(newOption)
                                 elif info['camp'] != character.camp:
                                     for border in getBorder(node):
                                         invalidPaths.append(border)
+                                elif info['camp'] == character.camp:
+                                    path.append(node)
+                                    newOption = {
+                                        'start': option['start'],
+                                        'path': path,
+                                        'cost': option['cost'] + 1,
+                                        'stop': False,
+                                        'target': node
+                                    }
+                                    newFringe.append(newOption)
                             except KeyError:
                                 # if x, y are out of range, KeyError may be triggered
                                 pass
@@ -156,7 +167,8 @@ class Map(object):
                         options.remove(option)
                     return options
             for option in newFringe:
-                options.append(option)
+                if option['stop']:
+                    options.append(option)
             options = addOptions(options, invalidPaths, newFringe)
             return options
 
