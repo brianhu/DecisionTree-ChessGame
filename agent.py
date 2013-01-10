@@ -17,28 +17,8 @@ class Troops:
         self.posX=newX
         self.posY=newY
         
-    def doAttack(self,enemyAgent,enemyTroops):
-        enemy.target.life-=self.attack
-
-    def legalAttack(self):
-        map=Map()
-        x,y=self.posX,self.posY
-        legalAttackDic={}
-        if self.kind=='general' or self.kind==infantry:
-            for i in range(1):
-                for j in range(1):
-                    if isEnemey(x,y):
-
-
-                        return legalAttackDic
-        if self.kind==cavalry:
-
-            return legalAttackRange
-
-        if self.kind==archer:
-
-
-            return legalAttackRange
+    def doAttack(self,enemyAgent,enemyTroop):
+        enemyTroop.life = enemy.target.life - self.attack
 
 
 class Agent:
@@ -65,17 +45,20 @@ class Agent:
     def aliveList(self):
         aliveList=[]
         if self.general.life!=0:
-            aliveList.add(self.general)
+            aliveList.append(self.general)
         if self.cavalry.life!=0:
-            aliveList.add(self.cavalry)
+            aliveList.append(self.cavalry)
         if self.archer.life!=0:
-            aliveList.add(self.archer)
+            aliveList.append(self.archer)
         if self.infantry1.life!=0:
-            aliveList.add(self.infantry1)
+            aliveList.append(self.infantry1)
         if self.infantry2.life!=0:
-            aliveList.add(self.infantry2)
+            aliveList.append(self.infantry2)
         return aliveList
 
+    def memberList(self):
+
+        return [self.general,self.cavalry,self.archer,self.infantry1,self.infantry2]
 
 """
     def doRandomActions(self):
