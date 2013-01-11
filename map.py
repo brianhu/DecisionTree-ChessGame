@@ -25,19 +25,19 @@ class Map(object):
         self.width = len(self.map[0])
         self.height = len(self.map)
 
-    def allocLocation(self, character):
+    def allocLocation(self, troop):
         # player1CharacterList = ['G','A','C','I','I']
         # player2CharacterList = ['g','a','c','i','i']
         agentAdded = False
         while not agentAdded:
-            if character.camp == constant.player1['camp']:
+            if troop.camp == constant.player1['camp']:
                 x = randint(0, 4)
             else:
                 x = randint(5, 9)
             y = randint(0, 9)
             if self.map[x][y] == '.':
                 buffer = list(self.map[x])
-                buffer[y] = character.kind
+                buffer[y] = troop.kind
                 buffer = "".join(buffer)
                 self.map[x] = buffer
                 agentAdded = True
@@ -66,16 +66,16 @@ class Map(object):
         except KeyError:
             return {}
 
-    def setInfo(self, character, target):
+    def setInfo(self, troop, target):
         """update map"""
-        originalX = character.posX
-        originalY = character.posY
+        originalX = troop.posX
+        originalY = troop.posY
 
         newX = target[0]
         newY = target[1]
 
-        character.posX = newX
-        character.posY = newY
+        troop.posX = newX
+        troop.posY = newY
 
         buffer = list(self.map[originalX])
         buffer[originalY] = '.'
@@ -83,16 +83,15 @@ class Map(object):
         self.map[originalX] = buffer
 
         buffer = list(self.map[newX])
-        buffer[newY] = character.kind
+        buffer[newY] = troop.kind
         buffer = "".join(buffer)
         self.map[newX] = buffer
 
-        return character
+        return troop
 
 
-    def legalActions(self, character):
+    def legalActions(self, troop):
         """return legal locatoins"""
-        #TODO: across teammates
         import copy
         def getBorder(node):
             x = node[0]
@@ -111,18 +110,18 @@ class Map(object):
         def addOptions(options=[], invalidPaths=[], fringe=[]):
             if not options:
                 option = {
-                    'start': (character.posX, character.posY),
+                    'start': (troop.posX, troop.posY),
                     'path': [],
                     'cost': 0,
                     'stop': True,
-                    'target': (character.posX, character.posY)
+                    'target': (troop.posX, troop.posY)
                 } # stop is always an option
                 options.append(option)
                 fringe.append(option)
 
             newFringe = []
             for option in fringe:
-                if option['cost'] < character.moveRange:
+                if option['cost'] < troop.moveRange:
                     start = option['target'] # start of next step is target of last step
                     checkList = getBorder(start)
                     for node in checkList:
@@ -140,10 +139,10 @@ class Map(object):
                                         'target': node
                                     }
                                     newFringe.append(newOption)
-                                elif info['camp'] != character.camp:
+                                elif info['camp'] != troop.camp:
                                     for border in getBorder(node):
                                         invalidPaths.append(border)
-                                elif info['camp'] == character.camp:
+                                elif info['camp'] == troop.camp:
                                     path.append(node)
                                     newOption = {
                                         'start': option['start'],
@@ -175,7 +174,7 @@ class Map(object):
         actions = addOptions()
         return actions
 
-    def isEnemy(self, character):
+    def isEnemy(self, troop):
         """
             this method is used to check whether there is an enamy
             on a specific grid.
@@ -184,7 +183,7 @@ class Map(object):
             'player1' : 'player2',
             'player2' : 'player1'
         }
-        node = (character.posX, character.posY)
+        node = (troop.posX, troop.posY)
         gridInfo = self.getInfo(node)
         try:
             return grid_info['camp'] == enemyMap[camp]

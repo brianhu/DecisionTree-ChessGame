@@ -1,7 +1,7 @@
 from agent import Agent
 from agent import Troops
 from map import Map
-from random import randint
+import random
 
 def randomMove(agent,map):
     #print agent.memberList()
@@ -11,23 +11,18 @@ def randomMove(agent,map):
     #print attackList
 
     while True:
-        if len(moveList)==0:
+        if not moveList:
             break
         else:
-            num1 = randint(0,len(moveList)-1)
-            print num1
             #print 'len:',len(agent.aliveList())
             #print agent.aliveList
         
-            troop = moveList[num1]
+            troop = random.choice(moveList)
             
-            legalMoves = map.legalActions(troop)
-            num2 = randint (0,len(legalMoves)-1)
-            chosenMove = legalMoves[num2]
-            newX,newY = chosenMove['target']
-            troop.posX,troop.posY = newX, newY
-            print 'troop ',troop.kind,'from ',chosenMove['start'],'to ',chosenMove['target']
-            map.setInfo(troop, (newX,newY))
+            actions = map.legalActions(troop)
+            action = random.choice(actions)
+            print 'troop ',troop.kind,'from ',action['start'],'to ',action['target']
+            map.setInfo(troop, action['target'])
             moveList.remove(troop)
         
 
