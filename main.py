@@ -27,15 +27,15 @@ def setMap():
         screen.blit(textSurfaceObj, textRectObj)
         y_position += 40
 
-def infoUpdate(agent1,agent2,i):
+def infoUpdate(agentList,i):
     print 'Round:',(i+1)/2
     print 'Player1'
-    for troop in agent1.memberList():
-        if troop in agent1.aliveList():
+    for troop in agentList[0].memberList():
+        if troop in agentList[0].aliveList():
             print troop.kind,' ',troop.life
     print 'Player2'
-    for troop in agent2.memberList():
-        if troop in agent2.aliveList():
+    for troop in agentList[1].memberList():
+        if troop in agentList[1].aliveList():
             print troop.kind,' ',troop.life    
 
 setMap()
@@ -52,12 +52,12 @@ while True:
             sys.exit()
         if event.type == MOUSEBUTTONDOWN:
             if nowPlayer.index == 0:
-                randomMove(nowPlayer,map)         
+                randomMove(player,nowPlayer,map)         
             else:
-                randomMove(nowPlayer,map)
+                randomMove(player,nowPlayer,map)
             setMap()
                 
-            infoUpdate(player[0],player[1],i)
+            infoUpdate(player,i)
             if player[0].isLose():
                 print 'Player2 WIN!!'
                 break

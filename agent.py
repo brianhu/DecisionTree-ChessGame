@@ -4,9 +4,10 @@ import constant
 
 
 class Troops:
-    def __init__(self,id, camp, kind, life, moveRange, attack):
+    def __init__(self,id, camp, kind, life, moveRange, attack, parent):
         map = Map()
         self.id = id
+        self.parent = parent
         self.camp = camp
         self.kind=kind
         self.life=life
@@ -35,11 +36,11 @@ class Agent:
                 
         self.index=index
         self.camp = self.player['camp']
-        self.general=Troops(1, self.camp, self.player['general'], 10, 1, 3)
-        self.cavalry=Troops(2, self.camp, self.player['cavalry'], 10, 3, 2)
-        self.archer=Troops(3, self.camp, self.player['archer'], 10, 2, 1)
-        self.infantry1=Troops(4, self.camp, self.player['infantry'], 10, 2, 1)
-        self.infantry2=Troops(5, self.camp, self.player['infantry'], 10, 2, 1)
+        self.general=Troops(1, self.camp, self.player['general'], 10, 1, 3, index)
+        self.cavalry=Troops(2, self.camp, self.player['cavalry'], 10, 3, 2, index)
+        self.archer=Troops(3, self.camp, self.player['archer'], 10, 2, 1, index)
+        self.infantry1=Troops(4, self.camp, self.player['infantry'], 10, 2, 1, index)
+        self.infantry2=Troops(5, self.camp, self.player['infantry'], 10, 2, 1, index)
         
     def isLose(self):
         if self.general.life==0:

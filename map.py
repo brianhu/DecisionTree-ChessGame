@@ -207,3 +207,67 @@ class Map(object):
             return grid_info['camp'] == camp
         except KeyError:
             return False
+
+    def doAttack(self,agentList, attackingTroop,attackedId):
+        enemyIndex = (attackingTroop.parent+1)%2
+        
+        if attackedId == 1:
+            agentList[enemyIndex].general.life -= attackingTroop.attack
+            print agentList[enemyIndex].general.life
+        if attackedId == 2:
+            agentList[enemyIndex].cavalry.life -= attackingTroop.attack            
+        if attackedId == 3:
+            agentList[enemyIndex].archer.life -= attackingTroop.attack
+        if attackedId == 4:
+            agentList[enemyIndex].infantry1.life -= attackingTroop.attack
+        if attackedId == 1:
+            agentList[enemyIndex].infantry2.life -= attackingTroop.attack
+
+        return agentList
+
+    def legalAttacks(self,character):
+
+        x,y = character.posX ,character.posY
+        attackList = []
+
+        if character.id == 1 or character.id == 4 or character.id == 5:
+            if self.isEnemy(x+1,y,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y,character.camp), 'targetLocation':(x+1,y)})
+            if self.isEnemy(x+1,y+1,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y+1,character.camp), 'targetLocation':(x+1,y+1)})            
+            if self.isEnemy(x+1,y-1,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y-1,character.camp), 'targetLocation':(x+1,y-1)})
+            if self.isEnemy(x,y+1,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+1,character.camp), 'targetLocation':(x,y+1)})
+            if self.isEnemy(x-1,y+1,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y+1,character.camp), 'targetLocation':(x-1,y+1)})
+            if self.isEnemy(x-1,y-1,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y-1,character.camp), 'targetLocation':(x-1,y-1)})
+            if self.isEnemy(x,y-1,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-1,character.camp), 'targetLocation':(x,y-1)})
+            if self.isEnemy(x-1,y,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y,character.camp), 'targetLocation':(x-1,y)})
+
+        if character.id == 2:
+            if self.isEnemy(x+1,y,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y,character.camp), 'targetLocation':(x+1,y)})
+            if self.isEnemy(x-1,y,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y,character.camp), 'targetLocation':(x-1,y)})            
+            if self.isEnemy(x,y-1,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-1,character.camp), 'targetLocation':(x,y-1)})
+            if self.isEnemy(x,y+1,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+1,character.camp), 'targetLocation':(x,y+1)})
+
+        if character.id == 3:
+            if self.isEnemy(x+2,y,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+2,y,character.camp), 'targetLocation':(x+2,y)})
+            if self.isEnemy(x-2,y,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-2,y,character.camp), 'targetLocation':(x-2,y)})            
+            if self.isEnemy(x,y-2,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-2,character.camp), 'targetLocation':(x,y-2)})
+            if self.isEnemy(x,y+2,character.camp):
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+2,character.camp), 'targetLocation':(x,y+2)})            
+              
+        return attackList
+
+

@@ -3,11 +3,11 @@ from agent import Troops
 from map import Map
 import random
 
-def randomMove(agent,map):
+def randomMove(agentList,agent,map):
     #print agent.memberList()
     #print agent.general.life
     moveList = agent.aliveList()
-    attackList = agent.aliveList()
+    #attackList = agent.aliveList()
     #print attackList
 
     while True:
@@ -16,25 +16,23 @@ def randomMove(agent,map):
         else:
             #print 'len:',len(agent.aliveList())
             #print agent.aliveList
-        
-            troop = random.choice(moveList)
             
-            actions = map.legalActions(troop)
-            action = random.choice(actions)
-            print 'troop ',troop.kind,'from ',action['start'],'to ',action['target']
-            map.setInfo(troop, action['target'])
-            moveList.remove(troop)
+            troop = random.choice(moveList)
+            attackList = map.legalAttacks(troop)
+            if attackList:
+                print 'attackList is not empty'
+                print attackList
+                map.doAttack(agentList,troop,attackList[0]['targetTroopId'])
+                print troop.kind,'attacks',attackList[0]['targetTroopId']
+                moveList.remove(troop)
+            else:
+                actions = map.legalActions(troop)
+                action = random.choice(actions)
+                print 'troop ',troop.kind,'from ',action['start'],'to ',action['target']
+                map.setInfo(troop, action['target'])
+                moveList.remove(troop)
         
 
-"""
-
-#start,target,targetposition
-def legalAttack(self, character):
-    attackList = []
-    x,y = character.posX ,character.posY
-    if character.kind == :
-        getInfo(x+1,y)     
-"""
 
 
 """
