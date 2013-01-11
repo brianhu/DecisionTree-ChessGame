@@ -174,20 +174,27 @@ class Map(object):
         actions = addOptions()
         return actions
 
-    def isEnemy(self, troop):
+    def isEnemy(self, x, y, camp):
         """
-            this method is used to check whether there is an enamy
+            this method is used to check whether there is an enemy
             on a specific grid.
+            if there is an enemy on a grid, retun the id of it.
+            otherwise, return false
         """
         enemyMap = {
             'player1' : 'player2',
             'player2' : 'player1'
         }
-        node = (troop.posX, troop.posY)
+        node = (x, y)
         gridInfo = self.getInfo(node)
+        print gridInfo
         try:
-            return grid_info['camp'] == enemyMap[camp]
+            if gridInfo['camp'] == enemyMap[camp]:
+                return gridInfo['id']
+            else:
+                return False
         except KeyError:
+            print 'kerr'
             return False
 
     def isTeammate(self, x, y, camp):

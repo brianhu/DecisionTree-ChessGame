@@ -17,31 +17,49 @@ camp = neutral
 [G]
 name = general
 camp = player1
+id = 1
 
 [A]
 name = archer
 camp = player1
+id = 2
 
 [C]
 name = cavalry
 camp = player1
+id = 3
 
-[I]
+[I1]
 name = infantry
 camp = player1
+id = 4
+
+[I2]
+name = infantry
+camp = player1
+id = 5
 
 [g]
 name = general
 camp = player2
+id = 1
 
 [a]
 name = archer
 camp = player2
+id = 2
 
 [c]
 name = cavalry
 camp = player2
+id = 3
+
+[i1]
+name = infantry
+camp = player2
+id = 4
 
 [i]
 name = infantry
 camp = player2
+id = 5

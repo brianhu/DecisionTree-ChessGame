@@ -4,8 +4,9 @@ import constant
 
 
 class Troops:
-    def __init__(self, camp, kind, life, moveRange, attack):
+    def __init__(self,id, camp, kind, life, moveRange, attack):
         map = Map()
+        self.id = id
         self.camp = camp
         self.kind=kind
         self.life=life
@@ -20,6 +21,9 @@ class Troops:
     def doAttack(self,enemyAgent,enemyTroop):
         enemyTroop.life = enemy.target.life - self.attack
 
+    def currentPosition(self):
+        return self.posX, self.posY
+
 
 class Agent:
     def __init__(self,index):
@@ -30,11 +34,12 @@ class Agent:
             self.player = constant.player2
                 
         self.index=index
-        self.general=Troops(self.player['camp'], self.player['general'], 10, 1, 3)
-        self.cavalry=Troops(self.player['camp'], self.player['cavalry'], 10, 3, 2)
-        self.archer=Troops(self.player['camp'], self.player['archer'], 10, 2, 1)
-        self.infantry1=Troops(self.player['camp'], self.player['infantry'], 10, 2, 1)
-        self.infantry2=Troops(self.player['camp'], self.player['infantry'], 10, 2, 1)
+        self.camp = self.player['camp']
+        self.general=Troops(1, self.camp, self.player['general'], 10, 1, 3)
+        self.cavalry=Troops(2, self.camp, self.player['cavalry'], 10, 3, 2)
+        self.archer=Troops(3, self.camp, self.player['archer'], 10, 2, 1)
+        self.infantry1=Troops(4, self.camp, self.player['infantry'], 10, 2, 1)
+        self.infantry2=Troops(5, self.camp, self.player['infantry'], 10, 2, 1)
         
     def isLose(self):
         if self.general.life==0:
@@ -44,15 +49,15 @@ class Agent:
 
     def aliveList(self):
         aliveList=[]
-        if self.general.life!=0:
+        if self.general.life > 0:
             aliveList.append(self.general)
-        if self.cavalry.life!=0:
+        if self.cavalry.life > 0:
             aliveList.append(self.cavalry)
-        if self.archer.life!=0:
+        if self.archer.life > 0:
             aliveList.append(self.archer)
-        if self.infantry1.life!=0:
+        if self.infantry1.life > 0:
             aliveList.append(self.infantry1)
-        if self.infantry2.life!=0:
+        if self.infantry2.life > 0:
             aliveList.append(self.infantry2)
         return aliveList
 

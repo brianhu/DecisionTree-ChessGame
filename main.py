@@ -55,8 +55,6 @@ while True:
                 randomMove(nowPlayer,map)         
             else:
                 randomMove(nowPlayer,map)
-            for row in map.map:
-                print row
             setMap()
                 
             infoUpdate(player[0],player[1],i)
@@ -69,11 +67,12 @@ while True:
             nowPlayer = player[ (nowPlayer.index+1)%2 ]
             i = i+1 
         elif event.type == KEYDOWN:
+            print map.isEnemy(8,4,player[0].camp)
             print 'keydown'
-            actions = map.legalActions(player[1].cavalry)
-            action = randint(0, len(actions) - 1)
-            target = actions[action]['target']
-            map.setInfo(player[1].cavalry, target)
+            # actions = map.legalActions(player[1].cavalry)
+            # action = randint(0, len(actions) - 1)
+            # target = actions[action]['target']
+            # map.setInfo(player[1].cavalry, target)
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
