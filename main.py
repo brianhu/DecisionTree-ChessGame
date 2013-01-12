@@ -47,6 +47,8 @@ end = 0
 i = 1
 nowPlayer=player[0]
 
+autoRun = False
+
 while True:
 
     pygame.display.update()
@@ -64,28 +66,29 @@ while True:
             infoUpdate(player,i)
             pygame.display.update()
 
-            while not player[0].isLose() and not player[1].isLose():
-                nowPlayer = player[ (nowPlayer.index+1)%2 ]
-                i = i+1
-                randomMove(player,nowPlayer,map)
-                setMap()
-                infoUpdate(player,i)
-                pygame.display.update()
+            if autoRun:
+                while not player[0].isLose() and not player[1].isLose():
+                    nowPlayer = player[ (nowPlayer.index+1)%2 ]
+                    i = i+1
+                    randomMove(player,nowPlayer,map)
+                    setMap()
+                    infoUpdate(player,i)
+                    pygame.display.update()
                 
             
             if player[0].isLose():
                 print 'Player2 WIN!!'
-                end = 1 
+                sys.exit()
                 break
             if player[1].isLose():
                 print 'Player1 WIN!!'
-                end = 1 
+                sys.exit()
                 break
             nowPlayer = player[ (nowPlayer.index+1)%2 ]
             i = i+1
             
         elif event.type == KEYDOWN:
-            player[0].general.doAttack(player, 5)
+            print map.getInfo((5,4))
             print 'keydown'
             # actions = map.legalActions(player[1].cavalry)
             # action = randint(0, len(actions) - 1)

@@ -1,4 +1,4 @@
-import ConfigParser
+import ConfigParser 
 from random import randint
 import constant
 import copy
@@ -14,17 +14,22 @@ def singleton(cls):
 @singleton
 class Map(object):
     def __init__(self, filename='level.map'):
-        self.key = {}
         parser = ConfigParser.ConfigParser()
         parser.read(filename)
         self.map = parser.get('level', 'map').split("\n")
-        for section in parser.sections():
-            if len(section) < 3:
-                desc = dict(parser.items(section))
-                self.key[section] = desc
         self.width = len(self.map[0])
         self.height = len(self.map)
-        print self.key
+        self.distribution = {}
+
+    def update(self, node, value):
+        x = node[0]
+        y = node[1]
+        buffer = list(self.map[x])
+        buffer[y] = value
+        buffer = "".join(buffer)
+        self.map[x] = buffer
+    def setDistribution(self, originalNode, target):
+        self.distribution[target] = self.distribution.pop(originalNode)
 
     def allocLocation(self, troop):
         # player1CharacterList = ['G','A','C','I','I']
@@ -37,10 +42,8 @@ class Map(object):
                 x = randint(5, 9)
             y = randint(0, 9)
             if self.map[x][y] == '.':
-                buffer = list(self.map[x])
-                buffer[y] = troop.kind
-                buffer = "".join(buffer)
-                self.map[x] = buffer
+                self.update((x, y), troop.kind)
+                self.distribution[(x, y)] = troop
                 agentAdded = True
 
         return x, y
@@ -56,40 +59,17 @@ class Map(object):
             map[0][0] is .
             map[0][1] is #
         """
-        x = node[0]
-        y = node[1]
         try:
-            char = self.map[x][y]
-        except IndexError:
-            return {}
-        try:
-            return self.key[char]
+            return self.distribution[node].getDetail()
         except KeyError:
-            return {}
+            return {'camp': 'neutral', 'name': 'floor'}
 
     def setInfo(self, troop, target):
         """update map"""
-        originalX = troop.posX
-        originalY = troop.posY
+        self.update((troop.posX, troop.posY), '.')
 
-        newX = target[0]
-        newY = target[1]
-
-        troop.posX = newX
-        troop.posY = newY
-
-        buffer = list(self.map[originalX])
-        buffer[originalY] = '.'
-        buffer = "".join(buffer)
-        self.map[originalX] = buffer
-
-        buffer = list(self.map[newX])
-        buffer[newY] = troop.kind
-        buffer = "".join(buffer)
-        self.map[newX] = buffer
-
-        return troop
-
+        self.update(target, troop.kind)
+        self.setDistribution((troop.posX, troop.posY), target)
 
     def legalActions(self, troop):
         """return legal locatoins"""
@@ -108,7 +88,7 @@ class Map(object):
                 border.append((x, (y+1)))
             return border
 
-        def addOptions(options=[], invalidPaths=[], fringe=[]):
+        def addOptions(options=[], teammateList=[], enemyList=[], invalidPaths=[], fringe=[]):
             if not options:
                 option = {
                     'start': (troop.posX, troop.posY),
@@ -141,9 +121,11 @@ class Map(object):
                                     }
                                     newFringe.append(newOption)
                                 elif info['camp'] != troop.camp:
+                                    enemyList.append(info)
                                     for border in getBorder(node):
                                         invalidPaths.append(border)
                                 elif info['camp'] == troop.camp:
+                                    teammateList.append(info)
                                     path.append(node)
                                     newOption = {
                                         'start': option['start'],
@@ -165,15 +147,15 @@ class Map(object):
                                 break
                     for option in invalidOptions:
                         options.remove(option)
-                    return options
+                    return options, teammateList, enemyList
             for option in newFringe:
                 if option['stop']:
                     options.append(option)
-            options = addOptions(options, invalidPaths, newFringe)
-            return options
+            options, teammateList, enemyList = addOptions(options, teammateList, enemyList, invalidPaths, newFringe)
+            return options, teammateList, enemyList
 
-        actions = addOptions()
-        return actions
+        actions, teammateList, enemyList = addOptions()
+        return actions, teammateList, enemyList
 
     def isEnemy(self, x, y, camp):
         """
@@ -206,24 +188,7 @@ class Map(object):
             return grid_info['camp'] == camp
         except KeyError:
             return False
-    """
-    def doAttack(self,agentList, attackingTroop,attackedId):
-        enemyIndex = (attackingTroop.parent+1)%2
-        
-        if attackedId == 1:
-            agentList[enemyIndex].general.life -= attackingTroop.attack
-            print agentList[enemyIndex].general.life
-        if attackedId == 2:
-            agentList[enemyIndex].cavalry.life -= attackingTroop.attack            
-        if attackedId == 3:
-            agentList[enemyIndex].archer.life -= attackingTroop.attack
-        if attackedId == 4:
-            agentList[enemyIndex].infantry1.life -= attackingTroop.attack
-        if attackedId == 1:
-            agentList[enemyIndex].infantry2.life -= attackingTroop.attack
 
-        return agentList
-    """
     def legalAttacks(self,character):
 
         x,y = character.posX ,character.posY
@@ -271,11 +236,5 @@ class Map(object):
 
     def removeDead(self, node):
         """this method is used to remove dead from the map"""
-        x = node[0]
-        y = node[1]
-        buffer = list(self.map[x])
-        buffer[y] = '.'
-        buffer = "".join(buffer)
-        self.map[x] = buffer
-        print 'removed!'
-
+        self.update(node, '.')
+        del self.distribution[node]
