@@ -22,7 +22,7 @@ def randomMove(agentList,agent,map):
             if attackList:
                 print 'attackList is not empty'
                 print attackList
-                map.doAttack(agentList,troop,attackList[0]['targetTroopId'])
+                troop.doAttack(agentList,attackList[0]['targetTroopId'])
                 print troop.kind,'attacks',attackList[0]['targetTroopId']
                 moveList.remove(troop)
             else:
@@ -31,7 +31,8 @@ def randomMove(agentList,agent,map):
                 print 'troop ',troop.kind,'from ',action['start'],'to ',action['target']
                 map.setInfo(troop, action['target'])
                 moveList.remove(troop)
-        
+
+    return agentList
 
 
 

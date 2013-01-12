@@ -19,8 +19,22 @@ class Troops:
         self.posX=newX
         self.posY=newY
         
-    def doAttack(self,enemyAgent,enemyTroop):
-        enemyTroop.life = enemy.target.life - self.attack
+    def doAttack(self,agentList,attackedId):
+        enemyIndex = (self.parent+1)%2
+        
+        if attackedId == 1:
+            agentList[enemyIndex].general.life -= self.attack
+            print agentList[enemyIndex].general.life
+        if attackedId == 2:
+            agentList[enemyIndex].cavalry.life -= self.attack            
+        if attackedId == 3:
+            agentList[enemyIndex].archer.life -= self.attack
+        if attackedId == 4:
+            agentList[enemyIndex].infantry1.life -= self.attack
+        if attackedId == 5:
+            agentList[enemyIndex].infantry2.life -= self.attack
+
+        return agentList
 
     def currentPosition(self):
         return self.posX, self.posY

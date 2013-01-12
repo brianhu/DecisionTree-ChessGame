@@ -207,7 +207,7 @@ class Map(object):
             return grid_info['camp'] == camp
         except KeyError:
             return False
-
+    """
     def doAttack(self,agentList, attackingTroop,attackedId):
         enemyIndex = (attackingTroop.parent+1)%2
         
@@ -224,7 +224,7 @@ class Map(object):
             agentList[enemyIndex].infantry2.life -= attackingTroop.attack
 
         return agentList
-
+    """
     def legalAttacks(self,character):
 
         x,y = character.posX ,character.posY
