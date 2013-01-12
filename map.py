@@ -19,11 +19,12 @@ class Map(object):
         parser.read(filename)
         self.map = parser.get('level', 'map').split("\n")
         for section in parser.sections():
-            if len(section) == 1:
+            if len(section) < 3:
                 desc = dict(parser.items(section))
                 self.key[section] = desc
         self.width = len(self.map[0])
         self.height = len(self.map)
+        print self.key
 
     def allocLocation(self, troop):
         # player1CharacterList = ['G','A','C','I','I']
@@ -187,14 +188,12 @@ class Map(object):
         }
         node = (x, y)
         gridInfo = self.getInfo(node)
-        print gridInfo
         try:
             if gridInfo['camp'] == enemyMap[camp]:
-                return gridInfo['id']
+                return int(gridInfo['id'])
             else:
                 return False
         except KeyError:
-            print 'kerr'
             return False
 
     def isTeammate(self, x, y, camp):
@@ -270,4 +269,13 @@ class Map(object):
               
         return attackList
 
+    def removeDead(self, node):
+        """this method is used to remove dead from the map"""
+        x = node[0]
+        y = node[1]
+        buffer = list(self.map[x])
+        buffer[y] = '.'
+        buffer = "".join(buffer)
+        self.map[x] = buffer
+        print 'removed!'
 

@@ -5,7 +5,8 @@ player1 = {
     'general' : 'G',
     'archer' : 'A',
     'cavalry' : 'C',
-    'infantry' : 'I'
+    'infantry1' : 'I',
+    'infantry2' : 'J'
 }
 
 player2 = {
@@ -13,5 +14,6 @@ player2 = {
     'general' : 'g',
     'archer' : 'a',
     'cavalry' : 'c',
-    'infantry' : 'i'
+    'infantry1' : 'i',
+    'infantry2' : 'j'
 }

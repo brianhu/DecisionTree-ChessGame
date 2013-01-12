@@ -19,22 +19,22 @@ name = general
 camp = player1
 id = 1
 
-[A]
-name = archer
-camp = player1
-id = 2
-
 [C]
 name = cavalry
 camp = player1
+id = 2
+
+[A]
+name = archer
+camp = player1
 id = 3
 
-[I1]
+[I]
 name = infantry
 camp = player1
 id = 4
 
-[I2]
+[J]
 name = infantry
 camp = player1
 id = 5
@@ -44,22 +44,22 @@ name = general
 camp = player2
 id = 1
 
-[a]
-name = archer
-camp = player2
-id = 2
-
 [c]
 name = cavalry
 camp = player2
+id = 2
+
+[a]
+name = archer
+camp = player2
 id = 3
 
-[i1]
+[i]
 name = infantry
 camp = player2
 id = 4
 
-[i]
+[j]
 name = infantry
 camp = player2
 id = 5

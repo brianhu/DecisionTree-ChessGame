@@ -2,10 +2,10 @@ from map import Map
 import constant
 
 
+map = Map()
 
 class Troops:
     def __init__(self,id, camp, kind, life, moveRange, attack, parent):
-        map = Map()
         self.id = id
         self.parent = parent
         self.camp = camp
@@ -23,21 +23,25 @@ class Troops:
         enemyIndex = (self.parent+1)%2
         
         if attackedId == 1:
-            agentList[enemyIndex].general.life -= self.attack
+            target = agentList[enemyIndex].general
             print agentList[enemyIndex].general.life
         if attackedId == 2:
-            agentList[enemyIndex].cavalry.life -= self.attack            
+            target = agentList[enemyIndex].cavalry
         if attackedId == 3:
-            agentList[enemyIndex].archer.life -= self.attack
+            target = agentList[enemyIndex].archer
         if attackedId == 4:
-            agentList[enemyIndex].infantry1.life -= self.attack
+            target = agentList[enemyIndex].infantry1
         if attackedId == 5:
-            agentList[enemyIndex].infantry2.life -= self.attack
+            target = agentList[enemyIndex].infantry2
+        target.life -= self.attack
+        if target.life < 0:
+            print 'target dead!'
+            map.removeDead(target.currentPosition())
 
         return agentList
 
     def currentPosition(self):
-        return self.posX, self.posY
+        return (self.posX, self.posY)
 
 
 class Agent:
@@ -53,11 +57,11 @@ class Agent:
         self.general=Troops(1, self.camp, self.player['general'], 10, 1, 3, index)
         self.cavalry=Troops(2, self.camp, self.player['cavalry'], 10, 3, 2, index)
         self.archer=Troops(3, self.camp, self.player['archer'], 10, 2, 1, index)
-        self.infantry1=Troops(4, self.camp, self.player['infantry'], 10, 2, 1, index)
-        self.infantry2=Troops(5, self.camp, self.player['infantry'], 10, 2, 1, index)
+        self.infantry1=Troops(4, self.camp, self.player['infantry1'], 10, 2, 1, index)
+        self.infantry2=Troops(5, self.camp, self.player['infantry2'], 10, 2, 1, index)
         
     def isLose(self):
-        if self.general.life==0:
+        if self.general.life < 0:
             return True
         else:
             return False

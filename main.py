@@ -67,12 +67,14 @@ while True:
             nowPlayer = player[ (nowPlayer.index+1)%2 ]
             i = i+1 
         elif event.type == KEYDOWN:
-            print map.isEnemy(8,4,player[0].camp)
+            player[0].general.doAttack(player, 5)
             print 'keydown'
             # actions = map.legalActions(player[1].cavalry)
             # action = randint(0, len(actions) - 1)
             # target = actions[action]['target']
             # map.setInfo(player[1].cavalry, target)
+        elif event.type == MOUSEBUTTONDOWN:
+            pass
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
