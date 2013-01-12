@@ -20,8 +20,8 @@ def randomMove(agentList,agent,map):
             troop = random.choice(moveList)
             attackList = map.legalAttacks(troop)
             if attackList:
-                print 'attackList is not empty'
-                print attackList
+                #print 'attackList is not empty'
+                #print attackList
                 troop.doAttack(agentList,attackList[0]['targetTroopId'])
                 print troop.kind,'attacks',attackList[0]['targetTroopId']
                 moveList.remove(troop)
@@ -30,21 +30,14 @@ def randomMove(agentList,agent,map):
                 action = random.choice(actions)
                 print 'troop ',troop.kind,'from ',action['start'],'to ',action['target']
                 map.setInfo(troop, action['target'])
+                attackList = map.legalAttacks(troop)
+                """
+                if attackList:
+                    troop.doAttack(agentList,attackList[0]['targetTroopId'])
+                    print troop.kind,'attacks',attackList[0]['targetTroopId']
+                """
                 moveList.remove(troop)
 
     return agentList
 
 
-
-"""
-def infoDisplayUpdate(agent1,agnet2):
-    
-    print 'Player1'
-    for troop in agent1.memeberList():
-            if troop in agent1.aliveList():
-            print troop.type,' ',troop.life
-    print 'Player2'
-    for troop in agent2.memeberList():
-        if troop in agent2.aliveList():
-            print troop.type,' ',troop.life     
-"""

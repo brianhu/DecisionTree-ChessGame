@@ -33,13 +33,17 @@ def infoUpdate(agentList,i):
     for troop in agentList[0].memberList():
         if troop in agentList[0].aliveList():
             print troop.kind,' ',troop.life
+        else:
+            print troop.kind,' ','dead'
     print 'Player2'
     for troop in agentList[1].memberList():
         if troop in agentList[1].aliveList():
-            print troop.kind,' ',troop.life    
+            print troop.kind,' ',troop.life
+        else:
+            print troop.kind,' ','dead'
 
 setMap()
-
+end = 0
 i = 1
 nowPlayer=player[0]
 
@@ -58,14 +62,28 @@ while True:
             setMap()
                 
             infoUpdate(player,i)
+            pygame.display.update()
+
+            while not player[0].isLose() and not player[1].isLose():
+                nowPlayer = player[ (nowPlayer.index+1)%2 ]
+                i = i+1
+                randomMove(player,nowPlayer,map)
+                setMap()
+                infoUpdate(player,i)
+                pygame.display.update()
+                
+            
             if player[0].isLose():
                 print 'Player2 WIN!!'
+                end = 1 
                 break
             if player[1].isLose():
                 print 'Player1 WIN!!'
+                end = 1 
                 break
             nowPlayer = player[ (nowPlayer.index+1)%2 ]
-            i = i+1 
+            i = i+1
+            
         elif event.type == KEYDOWN:
             player[0].general.doAttack(player, 5)
             print 'keydown'
@@ -75,10 +93,7 @@ while True:
             # map.setInfo(player[1].cavalry, target)
         elif event.type == MOUSEBUTTONDOWN:
             pass
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+        
     
     
 

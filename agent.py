@@ -24,7 +24,6 @@ class Troops:
         
         if attackedId == 1:
             target = agentList[enemyIndex].general
-            print agentList[enemyIndex].general.life
         if attackedId == 2:
             target = agentList[enemyIndex].cavalry
         if attackedId == 3:
