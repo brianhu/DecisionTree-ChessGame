@@ -218,15 +218,15 @@ class Map(object):
             this method is used to check whether there is an enamy
             on a specific grid.
         """
-        grid_info = self.get_info(x, y)
+        grid_info = self.getInfo((x, y))
         try:
             return grid_info['camp'] == camp
         except KeyError:
             return False
 
-    def legalAttacks(self,character):
+    def legalAttacks(self,character,x,y):
 
-        x,y = character.posX ,character.posY
+        #x,y = character.posX ,character.posY
         attackList = []
 
         if character.id == 1 or character.id == 4 or character.id == 5:
