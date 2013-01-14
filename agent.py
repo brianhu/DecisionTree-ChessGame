@@ -48,8 +48,12 @@ class Agent(object):
         return aliveList
 
     def memberList(self):
-
         return [self.general,self.cavalry,self.archer,self.infantry1,self.infantry2]
+
+    def generalPosition(self):
+        """return general position"""
+        return self.general.currentPosition()
+        
 
 class Troops(object):
     def __init__(self,id, camp, kind, life, moveRange, attack, parent):

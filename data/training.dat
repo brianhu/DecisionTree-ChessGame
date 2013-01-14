@@ -1,0 +1,14 @@
+Class names: positive negative 
+
+Feature names and their values:
+     generalLive => full medium dead 
+     enemys => none little many
+     teammates => none little many 
+     attackGeneral => 0 1 2 3 
+
+
+Training Data:
+
+sample          class          generalLive   enemys   teammates     attackGeneral  
+================================================================================================
+sample_0        positive       full          medium   medium        3                                                         

@@ -59,10 +59,49 @@ class Map(object):
             map[0][0] is .
             map[0][1] is #
         """
+        if node[0] < 0 or node[1] < 0 or node[0] > 9 or node[1] > 9: # out of map range
+            return None
         try:
             return self.distribution[node].getDetail()
         except KeyError:
             return {'camp': 'neutral', 'name': 'floor'}
+
+    def getSurrounder(self, node):
+        """
+              *
+             ***
+            **x**
+             ***
+              *
+            search through all stars
+            return surrounding enemis and teammates
+        """
+        x = node[0]
+        y = node[1]
+        player1List = []
+        player2List = []
+        surrounder = []
+        for tempX in range(x-1, x+2):
+            for tempY in range(y-1, y+2):
+                tempNode = (tempX, tempY)
+                if tempNode != node:
+                    surrounder.append(tempNode)
+        surrounder.append((x-2, y))
+        surrounder.append((x+2, y))
+        surrounder.append((x, y+2))
+        surrounder.append((x, y-2))
+
+        for node in surrounder:
+            info = self.getInfo(node)
+            try:
+                if info['camp'] == constant.player1['camp']:
+                    player1List.append(info)
+                elif info['camp'] == constant.player2['camp']:
+                    player2List.append(info)
+            except (KeyError, TypeError):
+                pass
+        return player1List, player2List
+
 
     def setInfo(self, troop, target):
         """update map"""
@@ -164,18 +203,14 @@ class Map(object):
             if there is an enemy on a grid, retun the id of it.
             otherwise, return false
         """
-        enemyMap = {
-            'player1' : 'player2',
-            'player2' : 'player1'
-        }
         node = (x, y)
         gridInfo = self.getInfo(node)
         try:
-            if gridInfo['camp'] == enemyMap[camp]:
+            if gridInfo['camp'] == constant.enemyMap['camp']:
                 return int(gridInfo['id'])
             else:
                 return False
-        except KeyError:
+        except (KeyError, TypeError):
             return False
 
     def isTeammate(self, x, y, camp):

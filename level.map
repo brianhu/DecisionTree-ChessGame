@@ -10,3 +10,56 @@ map = ..........
       ..........
       ..........
 
+[.]
+name = floor
+camp = neutral
+
+[G]
+name = general
+camp = player1
+id = 1
+
+[C]
+name = cavalry
+camp = player1
+id = 2
+
+[A]
+name = archer
+camp = player1
+id = 3
+
+[I]
+name = infantry
+camp = player1
+id = 4
+
+[J]
+name = infantry
+camp = player1
+id = 5
+
+[g]
+name = general
+camp = player2
+id = 1
+
+[c]
+name = cavalry
+camp = player2
+id = 2
+
+[a]
+name = archer
+camp = player2
+id = 3
+
+[i]
+name = infantry
+camp = player2
+id = 4
+
+[j]
+name = infantry
+camp = player2
+id = 5

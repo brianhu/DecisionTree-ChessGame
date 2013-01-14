@@ -17,3 +17,8 @@ player2 = {
     'infantry1' : 'i',
     'infantry2' : 'j'
 }
+
+enemyMap = {
+    'player1' : 'player2',
+    'player2' : 'player1'
+}

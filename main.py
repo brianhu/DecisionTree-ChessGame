@@ -88,7 +88,7 @@ while True:
             i = i+1
             
         elif event.type == KEYDOWN:
-            print map.getInfo((5,4))
+            print map.getSurrounder((5,4))
             print 'keydown'
             # actions = map.legalActions(player[1].cavalry)
             # action = randint(0, len(actions) - 1)
