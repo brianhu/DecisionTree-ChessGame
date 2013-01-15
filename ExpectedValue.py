@@ -1,11 +1,12 @@
 from map import Map
+import constant
 
 map = Map()
 
 def distance(node1, node2):
     return abs(node1[0]-node2[0]) + abs(node1[1]-node2[1])
     
-def injury(troop, node):
+def maxInjury(troop, node):
     """return degree of injury"""
     player1List, player2List =  map.getSurrounder(node)
     if troop.camp == constant.player1['camp']:
@@ -13,18 +14,19 @@ def injury(troop, node):
     if troop.camp == constant.player2['camp']:
         enemyList = player1List
 
-    maxInjury = 0
+    maxInjuryValue = 0
     for enemy in enemyList:
-        maxInjury += enemy['attack']
+        maxInjuryValue += enemy['attack']
 
-    if maxInjury == 0:
+    if maxInjuryValue == 0:
         injury = 'none'
-    elif maxInjury < 3:
+    elif maxInjuryValue < 3:
         injury = 'low'
-    elif maxInjury >= 3 and maxInjury < 5:
+    elif maxInjuryValue >= 3 and maxInjuryValue < 5:
         injury = 'medium'
-    elif maxInjury <= 5:
+    elif maxInjuryValue >= 5:
         injury = 'heavy'
+
     return injury
 
 def generalSituation(agent, troop, node):
@@ -38,7 +40,7 @@ def generalSituation(agent, troop, node):
 
     distanceFromTroop = distance(agent.generalPosition(), troop.currentPosition())
     distanceFromTarget = distance(agent.generalPosition(), node)
-    if distanceFromTarget > 2 and distanceFromTarget <= 2:
+    if distanceFromTarget > 2 and distanceFromTroop <= 2:
         numOfTeammates -= 1
 
     surroundValue = numOfTeammates - numOfEnemies
@@ -61,24 +63,24 @@ def situation(troop, node):
         enemyList = player1List
         teammateList = player2List
 
-    ourTotalLive = 0
+    ourTotalLife = 0
     ourTotalAttack = 0
     for teammate in teammateList:
-        ourTotalLive += teammate['live']
+        ourTotalLife += teammate['life']
         ourTotalAttack += teammate['attack']
 
     moveDistance = distance(troop.currentPosition(), node)
-    if moveDistance > 2:
-        ourTotalLive -= troop.life
-        ourTotalAttack -= troop.attack
+    if  moveDistance > 2:
+        ourTotalLife += troop.life
+        ourTotalAttack += troop.attack
 
-    enemyTotalLive = 0
+    enemyTotalLife = 0
     enemyTotalAttack = 0
     for enemy in enemyList:
-        enemyTotalLive += enemy['live']
+        enemyTotalLife += enemy['life']
         enemyTotalAttack += enemy['attack']
 
-    expectedValue = (ourTotalAttack - enemyTotalLive) + (enemyTotalAttack - ourTotalLive)
+    expectedValue = (ourTotalLife - enemyTotalAttack) - (enemyTotalLife - ourTotalAttack)
     if expectedValue > 0:
         return 'strong'
     elif expectedValue < 0:
@@ -86,5 +88,57 @@ def situation(troop, node):
     elif expectedValue == 0:
         return 'even'
 
-def maxAttackOnGeneral(troop):
+def maxAttackOnGeneral(troop, node):
+    x, y = node[0], node[1]
+    attackList = map.legalAttacks(troop, x, y)
+    for enemy in attackList:
+        if enemy['targetTroopId'] == 1:
+            return troop.attack
 
+    return 0
+
+def getExpectedValue(agent, troop, node, detail=True):
+    weightOfAttackEnemyGeneral = {
+        'safe'  :    3,
+        'normal':    2,
+        'dangerous': 1
+    }
+
+    weightOfProtectOurGeneral = {
+        'safe' :     1,
+        'normal':    2,
+        'dangerous': 3
+    }
+
+    weightOfInjury = {
+        'none': 0,         
+        'low': -1,
+        'medium': -2,
+        'heavy': -3
+    }
+
+    weightOfSituation = {
+        'strong': 8,
+        'weak': -8,
+        'even': 0
+    }
+
+    generalSituationValue = generalSituation(agent, troop, node)
+
+    situationValue = situation(troop, node)
+    attackValue = maxAttackOnGeneral(troop, node)
+    injuryValue = maxInjury(troop, node)
+
+    expectedValue = weightOfSituation[situationValue] * weightOfProtectOurGeneral[generalSituationValue] \
+            + weightOfAttackEnemyGeneral[generalSituationValue] * attackValue + weightOfInjury[injuryValue] - 5
+    print 'expectedValue', expectedValue
+    if detail:
+        info = {
+            'general': generalSituationValue,
+            'situation': situationValue, 'injury': injuryValue,
+            'attackGeneral': attackValue,
+            'expectedValue': expectedValue
+        }
+        return info
+    else:
+        return expectedValue

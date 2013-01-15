@@ -22,3 +22,13 @@ enemyMap = {
     'player1' : 'player2',
     'player2' : 'player1'
 }
+
+# training data constant
+
+positive = 'positive'
+negative = 'negative'
+
+general = 'general'# => safe normal dangerous
+situation = 'situation'# weak even strong
+injury = 'injury'# 'none low medium strong
+attackGeneral = 'attackGeneral'# => 0 1 2 3

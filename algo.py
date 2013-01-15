@@ -23,12 +23,12 @@ def randomMove(agentList,agent,map):
                 #print 'attackList is not empty'
                 #print attackList
                 troop.doAttack(agentList,attackList[0]['targetTroopId'])
-                print troop.kind,'attacks',attackList[0]['targetTroopId']
+                # print troop.kind,'attacks',attackList[0]['targetTroopId']
                 moveList.remove(troop)
             else:
                 actions, teammateList, enemyList = map.legalActions(troop)
                 action = random.choice(actions)
-                print 'troop ',troop.kind,'from ',action['start'],'to ',action['target']
+                # print 'troop ',troop.kind,'from ',action['start'],'to ',action['target']
                 troop.move(action['target'])
                 attackList = map.legalAttacks(troop,troop.posX,troop.posY)
                 """

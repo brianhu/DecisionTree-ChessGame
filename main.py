@@ -5,6 +5,11 @@ from agent import Agent
 from random import randint
 from algo import randomMove
 
+from searchAlgo import *
+
+from ExpectedValue import *
+from learningAlgo import Trainer, Decider
+
 BLUE = (0, 0, 128)
 GREEN = (0, 255, 0)
 pygame.init()
@@ -47,6 +52,8 @@ end = 0
 i = 1
 nowPlayer=player[0]
 
+trainer = Trainer()
+decider = Decider()
 autoRun = False
 
 while True:
@@ -54,13 +61,17 @@ while True:
     pygame.display.update()
     for event in pygame.event.get():
         if event.type == QUIT:
+            trainer.complete()
             pygame.quit()
             sys.exit()
         if event.type == MOUSEBUTTONDOWN:
             if nowPlayer.index == 0:
-                randomMove(player,nowPlayer,map)         
+                # randomMove(player,nowPlayer,map)         
+                # trainer.train(player, nowPlayer, map, i)
+                decider.play(player, nowPlayer, map )
             else:
-                randomMove(player,nowPlayer,map)
+                myAlgo(player, nowPlayer, map)
+                # randomMove(player,nowPlayer,map)
             setMap()
                 
             infoUpdate(player,i)
@@ -88,7 +99,6 @@ while True:
             i = i+1
             
         elif event.type == KEYDOWN:
-            print map.getSurrounder((5,4))
             print 'keydown'
             # actions = map.legalActions(player[1].cavalry)
             # action = randint(0, len(actions) - 1)
