@@ -3,7 +3,13 @@ from map import Map
 from pygame.locals import *
 from agent import Agent
 from random import randint
-from algo import randomMove
+#from algo import randomMove
+#from searchAlgo import myAlgo
+#from searchAlgo import evaluationFunction
+#from searchAlgo import enemyAround
+#from searchAlgo import teammateAround
+#from human import humanAlgo
+from algorithm import *
 
 from searchAlgo import *
 
@@ -56,6 +62,12 @@ trainer = Trainer()
 decider = Decider()
 autoRun = False
 
+
+if sys.argv[1] == '-a':
+	autoRun = True
+
+
+	
 while True:
 
     pygame.display.update()
@@ -66,12 +78,13 @@ while True:
             sys.exit()
         if event.type == MOUSEBUTTONDOWN:
             if nowPlayer.index == 0:
-                # randomMove(player,nowPlayer,map)         
-                # trainer.train(player, nowPlayer, map, i)
                 decider.play(player, nowPlayer, map )
             else:
                 myAlgo(player, nowPlayer, map)
-                # randomMove(player,nowPlayer,map)
+				algorithm(player,nowPlayer,map,sys.argv[2])
+            else:
+                #myAlgo(player,nowPlayer,map)
+				algorithm(player,nowPlayer,map,sys.argv[3])
             setMap()
                 
             infoUpdate(player,i)
@@ -79,12 +92,18 @@ while True:
 
             if autoRun:
                 while not player[0].isLose() and not player[1].isLose():
-                    nowPlayer = player[ (nowPlayer.index+1)%2 ]
-                    i = i+1
-                    randomMove(player,nowPlayer,map)
-                    setMap()
-                    infoUpdate(player,i)
-                    pygame.display.update()
+					nowPlayer = player[ (nowPlayer.index+1)%2 ]
+					i = i + 1
+					if nowPlayer.index == 0:
+						#randomMove(player,nowPlayer,map)
+						algorithm(player,nowPlayer,map,sys.argv[2])
+					else:
+						#myAlgo(player,nowPlayer,map)
+						algorithm(player,nowPlayer,map,sys.argv[3])
+						#randomMove(player,nowPlayer,map)
+					setMap()
+					infoUpdate(player,i)
+					pygame.display.update()
                 
             
             if player[0].isLose():
