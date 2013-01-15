@@ -92,10 +92,10 @@ while True:
 					i = i + 1
 					if nowPlayer.index == 0:
 						#randomMove(player,nowPlayer,map)
-						algorithm(player,nowPlayer,map,sys.argv[2],trainer,decider,i)
+						algorithm(player,nowPlayer,map,sys.argv[2],trainer,i)
 					else:
 						#myAlgo(player,nowPlayer,map)
-						algorithm(player,nowPlayer,map,sys.argv[3],trainer,decider,i)
+						algorithm(player,nowPlayer,map,sys.argv[3],trainer,i)
 						#randomMove(player,nowPlayer,map)
 					setMap()
 					infoUpdate(player,i)

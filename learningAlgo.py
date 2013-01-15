@@ -3,9 +3,6 @@ from ExpectedValue import *
 from map import Map
 from DecisionTree import DecisionTree
 
-# map = Map()
-# class DecisionTree():
-#     def __init__(self):
 
 class Decider(object):
     def __init__(self, trainingData='data/training.dat'):
@@ -14,10 +11,13 @@ class Decider(object):
         self.rootNode = self.dt.construct_decision_tree_classifier()
 
     def play(self, agentList, agent, map):
+        from random import random
         troops = agent.aliveList()
+        if random() > 0.5: troops.reverse()
         for troop in troops:
             bestValue = float('-inf')
             actions, teammateList, enemyList = map.legalActions(troop)
+            if random() > 0.5: actions.reverse()
             for action in actions:
                 self.makeDecision(agentList, agent, troop, action, map)
 
@@ -42,6 +42,7 @@ class Decider(object):
             bestValue = float('inf')
             for enemy in attackList:
                 if enemy['targetTroopId'] == 1:
+                    print 'enemy general!!!!'
                     target = enemy
                     break
                 elif enemy['targetLife'] < bestValue:

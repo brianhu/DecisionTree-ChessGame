@@ -97,10 +97,11 @@ def maxAttackOnGeneral(troop, node):
 
     return 0
 
-def getExpectedValue(agent, troop, node, detail=True):
+
+def getExpectedValue( agent, troop, node, detail=True):
     weightOfAttackEnemyGeneral = {
-        'safe'  :    3,
-        'normal':    2,
+        'safe'  :    5,
+        'normal':    3,
         'dangerous': 1
     }
 
@@ -118,8 +119,8 @@ def getExpectedValue(agent, troop, node, detail=True):
     }
 
     weightOfSituation = {
-        'strong': 8,
-        'weak': -8,
+        'strong': 3,
+        'weak': -3,
         'even': 0
     }
 
@@ -130,7 +131,7 @@ def getExpectedValue(agent, troop, node, detail=True):
     injuryValue = maxInjury(troop, node)
 
     expectedValue = weightOfSituation[situationValue] * weightOfProtectOurGeneral[generalSituationValue] \
-            + weightOfAttackEnemyGeneral[generalSituationValue] * attackValue + weightOfInjury[injuryValue] - 5
+            + weightOfAttackEnemyGeneral[generalSituationValue] * attackValue + weightOfInjury[injuryValue]
     print 'expectedValue', expectedValue
     if detail:
         info = {
