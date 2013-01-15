@@ -206,7 +206,7 @@ class Map(object):
         node = (x, y)
         gridInfo = self.getInfo(node)
         try:
-            if gridInfo['camp'] == constant.enemyMap['camp']:
+            if gridInfo['camp'] == constant.enemyMap[camp]:
                 return int(gridInfo['id'])
             else:
                 return False
@@ -221,7 +221,7 @@ class Map(object):
         grid_info = self.getInfo((x, y))
         try:
             return grid_info['camp'] == camp
-        except KeyError:
+        except (KeyError, TypeError):
             return False
 
     def legalAttacks(self,character,x,y):
@@ -231,45 +231,48 @@ class Map(object):
 
         if character.id == 1 or character.id == 4 or character.id == 5:
             if self.isEnemy(x+1,y,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y,character.camp), 'targetLocation':(x+1,y)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y,character.camp), 'targetLocation':(x+1,y), 'targetLife':character.life})
             if self.isEnemy(x+1,y+1,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y+1,character.camp), 'targetLocation':(x+1,y+1)})            
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y+1,character.camp), 'targetLocation':(x+1,y+1), 'targetLife':character.life})            
             if self.isEnemy(x+1,y-1,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y-1,character.camp), 'targetLocation':(x+1,y-1)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y-1,character.camp), 'targetLocation':(x+1,y-1), 'targetLife':character.life})
             if self.isEnemy(x,y+1,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+1,character.camp), 'targetLocation':(x,y+1)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+1,character.camp), 'targetLocation':(x,y+1), 'targetLife':character.life})
             if self.isEnemy(x-1,y+1,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y+1,character.camp), 'targetLocation':(x-1,y+1)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y+1,character.camp), 'targetLocation':(x-1,y+1), 'targetLife':character.life})
             if self.isEnemy(x-1,y-1,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y-1,character.camp), 'targetLocation':(x-1,y-1)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y-1,character.camp), 'targetLocation':(x-1,y-1), 'targetLife':character.life})
             if self.isEnemy(x,y-1,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-1,character.camp), 'targetLocation':(x,y-1)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-1,character.camp), 'targetLocation':(x,y-1), 'targetLife':character.life})
             if self.isEnemy(x-1,y,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y,character.camp), 'targetLocation':(x-1,y)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y,character.camp), 'targetLocation':(x-1,y), 'targetLife':character.life})
 
         if character.id == 2:
             if self.isEnemy(x+1,y,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y,character.camp), 'targetLocation':(x+1,y)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+1,y,character.camp), 'targetLocation':(x+1,y), 'targetLife':character.life})
             if self.isEnemy(x-1,y,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y,character.camp), 'targetLocation':(x-1,y)})            
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-1,y,character.camp), 'targetLocation':(x-1,y), 'targetLife':character.life})            
             if self.isEnemy(x,y-1,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-1,character.camp), 'targetLocation':(x,y-1)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-1,character.camp), 'targetLocation':(x,y-1), 'targetLife':character.life})
             if self.isEnemy(x,y+1,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+1,character.camp), 'targetLocation':(x,y+1)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+1,character.camp), 'targetLocation':(x,y+1), 'targetLife':character.life})
 
         if character.id == 3:
             if self.isEnemy(x+2,y,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+2,y,character.camp), 'targetLocation':(x+2,y)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x+2,y,character.camp), 'targetLocation':(x+2,y), 'targetLife':character.life})
             if self.isEnemy(x-2,y,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-2,y,character.camp), 'targetLocation':(x-2,y)})            
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x-2,y,character.camp), 'targetLocation':(x-2,y), 'targetLife':character.life})            
             if self.isEnemy(x,y-2,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-2,character.camp), 'targetLocation':(x,y-2)})
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y-2,character.camp), 'targetLocation':(x,y-2), 'targetLife':character.life})
             if self.isEnemy(x,y+2,character.camp):
-                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+2,character.camp), 'targetLocation':(x,y+2)})            
+                attackList.append({'start':(x,y), 'targetTroopId':self.isEnemy(x,y+2,character.camp), 'targetLocation':(x,y+2), 'targetLife':character.life})            
               
         return attackList
 
     def removeDead(self, node):
         """this method is used to remove dead from the map"""
         self.update(node, '.')
-        del self.distribution[node]
+        try:
+            del self.distribution[node]
+        except KeyError:
+            print 'error!!!!!!!', self.distribution
