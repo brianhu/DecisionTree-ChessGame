@@ -78,13 +78,10 @@ while True:
             sys.exit()
         if event.type == MOUSEBUTTONDOWN:
             if nowPlayer.index == 0:
-                decider.play(player, nowPlayer, map )
-            else:
-                myAlgo(player, nowPlayer, map)
-				algorithm(player,nowPlayer,map,sys.argv[2])
+				algorithm(player,nowPlayer,map,sys.argv[2],trainer,decider,i)
             else:
                 #myAlgo(player,nowPlayer,map)
-				algorithm(player,nowPlayer,map,sys.argv[3])
+				algorithm(player,nowPlayer,map,sys.argv[3],trainer,decider,i)
             setMap()
                 
             infoUpdate(player,i)
@@ -96,10 +93,10 @@ while True:
 					i = i + 1
 					if nowPlayer.index == 0:
 						#randomMove(player,nowPlayer,map)
-						algorithm(player,nowPlayer,map,sys.argv[2])
+						algorithm(player,nowPlayer,map,sys.argv[2],trainer,decider,i)
 					else:
 						#myAlgo(player,nowPlayer,map)
-						algorithm(player,nowPlayer,map,sys.argv[3])
+						algorithm(player,nowPlayer,map,sys.argv[3],trainer,decider,i)
 						#randomMove(player,nowPlayer,map)
 					setMap()
 					infoUpdate(player,i)

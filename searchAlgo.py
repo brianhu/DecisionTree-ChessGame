@@ -87,6 +87,8 @@ def evaluationFunction(map,agentList,agent,troop,action,attack):
 	if attack != None:
 		if attack['targetTroopId'] == 1:
 			score -= 400
+		if  attack['targetLife'] < 5:
+			score -= 100
 	if attack != None:
 		score -= 20*(7-attack['targetTroopId'])
 	
@@ -127,9 +129,9 @@ def myAlgo(agentList,agent,map):
 					sortedList = sorted(possibleList,key = lambda x:x['score'])
 					print 'troop:',troop.kind
 					i = 0
-					while i < len(sortedList) :
-						print sortedList[i]['score']
-						i += 1
+					#while i < len(sortedList) :
+					#	print sortedList[i]['score']
+					#	i += 1
 					
 					sortedList[0]['troop'].move(sortedList[0]['target'])
 					print 'troop',troop.kind,'move to ', sortedList[0]['target']

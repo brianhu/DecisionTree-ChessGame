@@ -4,8 +4,11 @@ from map import Map
 import random
 import copy
 import math
+from ExpectedValue import *
+from learningAlgo import Trainer, Decider
 
-def algorithm(agentList,agent,map,index):
+
+def algorithm(agentList,agent,map,index,trainer,decider,round):
 	if index == 'r':
 		randomAlgo(agentList,agent,map)
 		return 
@@ -15,6 +18,10 @@ def algorithm(agentList,agent,map,index):
 	if index == 'h':
 		humanAlgo(agentList,agent,map)
 		return 		
+	if index == 't':
+		trainer.train(agentList, agent, map, round)
+	if index == 'd':
+		decider.play(agentList,agent,map)
 		
 def randomAlgo(agentList,agent,map):
     #print agent.memberList()
