@@ -8,20 +8,21 @@ from ExpectedValue import *
 from learningAlgo import Trainer, Decider
 
 
-def algorithm(agentList,agent,map,index,trainer,decider,round):
-	if index == 'r':
-		randomAlgo(agentList,agent,map)
-		return 
-	if index == 's':
-		searchAlgo(agentList,agent,map)
-		return 
-	if index == 'h':
-		humanAlgo(agentList,agent,map)
-		return 		
-	if index == 't':
-		trainer.train(agentList, agent, map, round)
-	if index == 'd':
-		decider.play(agentList,agent,map)
+def algorithm(agentList,agent,map,index,trainer,round):
+    if index == 'r':
+        randomAlgo(agentList,agent,map)
+        return 
+    if index == 's':
+        searchAlgo(agentList,agent,map)
+        return 
+    if index == 'h':
+        humanAlgo(agentList,agent,map)
+        return 		
+    if index == 't':
+        trainer.train(agentList, agent, map, round)
+    if index == 'd':
+        decider = Decider()
+        decider.play(agentList,agent,map)
 		
 def randomAlgo(agentList,agent,map):
     #print agent.memberList()

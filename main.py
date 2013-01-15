@@ -59,7 +59,6 @@ i = 1
 nowPlayer=player[0]
 
 trainer = Trainer()
-decider = Decider()
 autoRun = False
 
 
@@ -78,10 +77,10 @@ while True:
             sys.exit()
         if event.type == MOUSEBUTTONDOWN:
             if nowPlayer.index == 0:
-				algorithm(player,nowPlayer,map,sys.argv[2],trainer,decider,i)
+				algorithm(player,nowPlayer,map,sys.argv[2],trainer,i)
             else:
                 #myAlgo(player,nowPlayer,map)
-				algorithm(player,nowPlayer,map,sys.argv[3],trainer,decider,i)
+				algorithm(player,nowPlayer,map,sys.argv[3],trainer,i)
             setMap()
                 
             infoUpdate(player,i)
